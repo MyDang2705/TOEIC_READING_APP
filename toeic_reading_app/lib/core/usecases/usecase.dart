@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-
-import '../error/failures.dart'; // Import Failure
+import '../error/failures.dart';
 
 // UseCase cơ sở cho các Use Case KHÔNG yêu cầu tham số
 abstract class UseCase<Type, Params> {

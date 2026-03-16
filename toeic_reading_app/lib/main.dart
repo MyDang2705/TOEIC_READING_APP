@@ -13,7 +13,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await di.init();
-  // await seedToeicVocabulary();
   runApp(const MyApp());
 }
 
@@ -24,7 +23,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => di.sl<AuthBloc>()..add(CheckAuthStatusEvent())),
+        BlocProvider(
+          create: (_) => di.sl<AuthBloc>()..add(CheckAuthStatusEvent()),
+        ),
         BlocProvider(create: (_) => di.sl<TestListBloc>()),
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(create: (_) => di.sl<AiBloc>()),
@@ -35,7 +36,6 @@ class MyApp extends StatelessWidget {
             title: 'TOEIC Reading App',
             debugShowCheckedModeBanner: false,
 
-            // --- THEME SÁNG ---
             theme: ThemeData(
               primarySwatch: Colors.blue,
               brightness: Brightness.light,
@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
               cardColor: Colors.white,
             ),
 
-            // --- THEME TỐI ---
             darkTheme: ThemeData(
               brightness: Brightness.dark,
               primarySwatch: Colors.blue,
@@ -84,7 +83,10 @@ class AppRouter extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthLoading) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        if (state is AuthLoading)
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         return const MainScreen();
       },
     );

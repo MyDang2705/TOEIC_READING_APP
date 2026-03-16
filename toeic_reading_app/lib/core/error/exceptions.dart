@@ -1,5 +1,3 @@
-// lib/core/error/exceptions.dart
-
 // Exception cơ bản cho lỗi Server (Lỗi 4xx, 5xx)
 class ServerException implements Exception {
   final String message;

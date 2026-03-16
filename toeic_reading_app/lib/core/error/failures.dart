@@ -17,22 +17,16 @@ abstract class Failure extends Equatable {
 class ServerFailure extends Failure {
   // Ghi đè constructor và gọi super
   const ServerFailure([String message = 'Lỗi máy chủ. Vui lòng thử lại sau.'])
-      : super(message);
+    : super(message);
 }
 
 // 2. Lỗi Mạng (Không có kết nối)
 class NetworkFailure extends Failure {
   const NetworkFailure([String message = 'Không có kết nối mạng.'])
-      : super(message);
+    : super(message);
 }
 
 // 3. Lỗi Xác thực (Đăng nhập/Đăng ký)
 class AuthFailure extends Failure {
-  const AuthFailure([String message = 'Lỗi xác thực.'])
-      : super(message);
+  const AuthFailure([String message = 'Lỗi xác thực.']) : super(message);
 }
-
-// Bạn có thể thêm các loại Failure khác nếu cần, ví dụ:
-// class CacheFailure extends Failure {
-//   const CacheFailure([String message = 'Lỗi bộ nhớ đệm.']) : super(message);
-// }

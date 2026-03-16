@@ -20,60 +20,62 @@ import '../../features/test_reading/data/repositories/test_repository_impl.dart'
 import '../../features/test_reading/data/datasources/test_remote_datasource.dart';
 import '../../features/test_reading/presentation/bloc/test_detail_bloc.dart';
 import '../../features/test_reading/presentation/bloc/test_list_bloc.dart';
+
 // ---AI_TUTOR FEATURE---
 import '../../features/ai_tutor/data/ai_remote_datasource.dart';
 import '../../features/ai_tutor/presentation/bloc/ai_bloc.dart';
 
-final sl = GetIt.instance; // sl là viết tắt của service locator
+final sl = GetIt.instance;
 
 Future<void> init() async {
-  // --- 0. External Dependencies (Firebase Instances) ---
+  // 0. External Dependencies (Firebase Instances) ---
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => FirebaseAuth.instance);
 
-
   // 1. Presentation
-  sl.registerFactory(() => AuthBloc(
-    signInUseCase: sl(),
-    signUpUseCase: sl(),
-    checkAuthStatusUseCase: sl(),
-  ));
-
-  sl.registerFactory(() => TestListBloc(getAvailableTestsUseCase: sl()));
-  sl.registerFactory(() => TestDetailBloc(
-    getTestDetailsUseCase: sl(),
-    submitTestUseCase: sl(),
-  ));
-// --- AI TUTOR (MỚI) ---
-  sl.registerLazySingleton(() => AiRemoteDataSource());
-  // 2. Use Cases - Auth
-  sl.registerLazySingleton(() => SignInUseCase(sl()));
-  sl.registerLazySingleton(() => SignUpUseCase(sl()));       // <<< THÊM: Đăng ký SignUpUseCase
-  sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
-
-  // 2. Use Cases - Test
-
-  sl.registerLazySingleton(() => GetAvailableTestsUseCase(sl()));
-  sl.registerLazySingleton(() => GetTestDetailsUseCase(sl()));
-  sl.registerLazySingleton(() => SubmitTestUseCase(sl()));
- // 2. tutor Bloc
-  sl.registerFactory(() => AiBloc(dataSource: sl()));
-
-  // 3. Repositories
-
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: sl()));
-  sl.registerLazySingleton<TestRepository>(() => TestRepositoryImpl(remoteDataSource: sl()));
-
-  // 4. Data Sources (Cập nhật để sử dụng Firebase instances)
-
-  sl.registerLazySingleton<AuthRemoteDataSource>(
-        () => AuthRemoteDataSourceImpl(
-      authClient: sl(),
-      firestore: sl(),
+  sl.registerFactory(
+    () => AuthBloc(
+      signInUseCase: sl(),
+      signUpUseCase: sl(),
+      checkAuthStatusUseCase: sl(),
     ),
   );
 
+  sl.registerFactory(() => TestListBloc(getAvailableTestsUseCase: sl()));
+  sl.registerFactory(
+    () => TestDetailBloc(getTestDetailsUseCase: sl(), submitTestUseCase: sl()),
+  );
+
+  // --- AI TUTOR (MỚI) ---
+  sl.registerLazySingleton(() => AiRemoteDataSource());
+
+  // 2. Use Cases - Auth
+  sl.registerLazySingleton(() => SignInUseCase(sl()));
+  sl.registerLazySingleton(() => SignUpUseCase(sl()));
+  sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
+
+  // 2. Use Cases - Test
+  sl.registerLazySingleton(() => GetAvailableTestsUseCase(sl()));
+  sl.registerLazySingleton(() => GetTestDetailsUseCase(sl()));
+  sl.registerLazySingleton(() => SubmitTestUseCase(sl()));
+
+  // 2. tutor Bloc
+  sl.registerFactory(() => AiBloc(dataSource: sl()));
+
+  // 3. Repositories
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton<TestRepository>(
+    () => TestRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // 4. Data Sources (Cập nhật để sử dụng Firebase instances)
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(authClient: sl(), firestore: sl()),
+  );
+
   sl.registerLazySingleton<TestRemoteDataSource>(
-        () => TestRemoteDataSourceImpl(firestore: sl()),
+    () => TestRemoteDataSourceImpl(firestore: sl()),
   );
 }

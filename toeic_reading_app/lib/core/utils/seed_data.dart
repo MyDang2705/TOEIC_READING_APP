@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final List<Map<String, dynamic>> _topicData7to15 = [
-
-];
+final List<Map<String, dynamic>> _topicData7to15 = [];
 
 Future<void> seedToeicVocabulary() async {
   final firestore = FirebaseFirestore.instance;
